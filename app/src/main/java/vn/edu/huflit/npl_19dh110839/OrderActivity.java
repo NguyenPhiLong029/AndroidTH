@@ -44,7 +44,7 @@ import vn.edu.huflit.npl_19dh110839.models.Users;
 
 public class OrderActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView tvTotal, tvName, tvAddress;
+    private TextView tvTotal, tvName, tvAddress, tvMobile;
     private RecyclerView rvFoods;
     private Basket basket;
     private FoodBasketAdapter adapter;
@@ -54,19 +54,17 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
     FirebaseAuth fAuth;
     FirebaseDatabase fDatabase;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-
-        SupportMapFragment mapFragment
-                = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.frgMaps);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.frgMaps);
         mapFragment.getMapAsync(this);
 
         tvAddress = findViewById(R.id.tvAddress);
         tvName = findViewById(R.id.tvName);
+        tvMobile = findViewById(R.id.tvMobile);
 
         fAuth = FirebaseAuth.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
@@ -82,10 +80,11 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                         MarkerOptions options = new MarkerOptions().position(latLngUser);
                         options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)));
                         map.addMarker(options);
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngUser, 15));
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngUser, 10));
 
                         tvName.setText("Name: " + user.getFirstName() + " " + user.getLastName());
                         tvAddress.setText("Address: " + user.getEmail());
+                        tvMobile.setText("Mobile: " + user.getPhone());
 
                     }
                 })
@@ -127,14 +126,12 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         }
 
-
         tvTotal = findViewById(R.id.tvTotal);
         tvTotal.setText(basket.getTotalPrice()+"");
         rvFoods = findViewById(R.id.rvFoods);
         adapter = new FoodBasketAdapter(new ArrayList<>(basket.foods.values()));
         rvFoods.setAdapter(adapter);
         rvFoods.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-
 
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
@@ -150,8 +147,6 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(@NonNull Void aVoid) {
-
-
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -160,7 +155,6 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
 
                             }
                         });
-
 
                 finish();
 

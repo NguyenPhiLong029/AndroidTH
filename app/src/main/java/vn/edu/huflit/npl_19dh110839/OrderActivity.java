@@ -80,13 +80,9 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                         Users user = dataSnapshot.getValue(Users.class);
                         LatLng latLngUser = new LatLng(user.getLatitude(), user.getLongitude());
                         MarkerOptions options = new MarkerOptions().position(latLngUser);
-                        options.icon(BitmapDescriptorFactory.fromBitmap(
-                                BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)));
-
+                        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)));
                         map.addMarker(options);
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngUser, 16));
-
-
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngUser, 15));
 
                         tvName.setText("Name: " + user.getFirstName() + " " + user.getLastName());
                         tvAddress.setText("Address: " + user.getEmail());
@@ -100,9 +96,7 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                     }
                 });
 
-
         cartRepository = new CartRepository(getApplication());
-
 
         Intent intent = getIntent();
 

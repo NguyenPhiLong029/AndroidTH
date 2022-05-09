@@ -22,7 +22,8 @@
         android:id="@+id/rvFoods"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/mediumSpace" />
+        android:layout_marginTop="@dimen/largeSpace"
+        android:layout_marginBottom="@dimen/largeSpace" />
 
     <TextView
         android:id="@+id/tvTotal"

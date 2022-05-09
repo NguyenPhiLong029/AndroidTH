@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import vn.edu.huflit.npl_19dh110839.adapter.FoodBasketAdapter;
 import vn.edu.huflit.npl_19dh110839.models.Basket;
 
@@ -25,8 +27,6 @@ public class BasketDialogFragment extends DialogFragment implements  View.OnClic
     public Basket basket;
     public FoodBasketAdapter adapter;
     public Button btnPlaceOrder;
-
-
 
     public BasketDialogFragment() {
     }
@@ -48,14 +48,11 @@ public class BasketDialogFragment extends DialogFragment implements  View.OnClic
         tvTotal = view.findViewById(R.id.tvTotal);
         tvTotal.setText(basket.getTotalPrice()+"");
         rvFoods = view.findViewById(R.id.rvFoods);
-        // dang fix
-//        adapter = new FoodBasketAdapter(new ArrayList<FoodBasket>(basket.foods.values()));
+        adapter = new FoodBasketAdapter(new ArrayList<>(basket.foods.values()));
         rvFoods.setAdapter(adapter);
         rvFoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
         btnPlaceOrder = view.findViewById(R.id.btnPlaceOrder);
         btnPlaceOrder.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -64,8 +61,6 @@ public class BasketDialogFragment extends DialogFragment implements  View.OnClic
         getDialog().setCancelable(true);
         super.onResume();
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -81,12 +76,8 @@ public class BasketDialogFragment extends DialogFragment implements  View.OnClic
             }
         }
 
-
         int id = v.getId();
-
-
     }
-
 
     @Override
     public void onCancel(DialogInterface dialog) {

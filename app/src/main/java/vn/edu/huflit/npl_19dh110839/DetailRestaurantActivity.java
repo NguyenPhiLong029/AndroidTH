@@ -101,9 +101,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements FoodA
                             Picasso.get().load(uri).into(ivCover);
                         }
                     });
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 

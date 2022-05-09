@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "351557662306",
+    "project_id": "npl-19dh110839-528fe",
+    "storage_bucket": "npl-19dh110839-528fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351557662306:android:0ea8afa63076b48303033b",
+        "android_client_info": {
+          "package_name": "vn.edu.huflit.npl_19dh110839"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351557662306-q38t4omv9l25qnf2q58dd6juipe1viof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnoIPPbX1p2Et51Rkv98iL8o_BRSIxcRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351557662306-q38t4omv9l25qnf2q58dd6juipe1viof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

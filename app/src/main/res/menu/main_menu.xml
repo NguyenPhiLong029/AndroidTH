@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single"
+        android:id="@+id/group_main">
+        <item android:title="Home"
+            android:id="@+id/homeFragment"/>
+        <item android:title="Order"
+            android:id="@+id/orderFragment"/>
+        <item android:title="Profile"
+            android:id="@+id/profileFragment"/>
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/group_logOut">
+        <item android:title="Log Out"
+            android:id="@+id/logOutFragment"/>
+    </group>
+</menu>

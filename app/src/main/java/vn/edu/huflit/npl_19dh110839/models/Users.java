@@ -74,7 +74,7 @@ public class Users {
         this.longitude = longitude;
     }
 
-    public Users(String email, String firstname, String lastname, String phone, String address, String userID, double latitude, double longitude) {
+    public Users(String email, String firstname, String lastname, String phone, String address, String userID,double latitude,double longitude) {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;

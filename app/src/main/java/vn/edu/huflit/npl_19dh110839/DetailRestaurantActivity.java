@@ -58,6 +58,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements FoodA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_detail);
+
         foods = new ArrayList<>();
         app = (App) getApplication();
         cartRepository = new CartRepository(getApplication());

@@ -22,6 +22,7 @@
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/activity_sign_in.xml" value="0.36666666666666664" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/activity_sign_up.xml" value="0.36666666666666664" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/activity_welcome.xml" value="0.36666666666666664" />
+        <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/custom_action_item_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/fragment_add_to_basket_dialog.xml" value="0.225" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/fragment_address.xml" value="0.36666666666666664" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/fragment_basket_dialog.xml" value="0.225" />
@@ -36,10 +37,11 @@
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/layout_header_navigation.xml" value="0.12590579710144928" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/row_food.xml" value="0.18342391304347827" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/row_food_basket.xml" value="0.225" />
-        <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/row_order_finished.xml" value="0.21" />
+        <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/row_order_finished.xml" value="0.36666666666666664" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/row_restaurant.xml" value="0.21770833333333334" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/layout/row_top_restaurant.xml" value="0.18802083333333333" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/menu/main_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/menu/menucart.xml" value="0.18802083333333333" />
         <entry key="..\:/Nam3HK2/LTDDNC/TH/NPL_19DH110839/app/src/main/res/menu/mnucart.xml" value="0.225" />
       </map>
     </option>

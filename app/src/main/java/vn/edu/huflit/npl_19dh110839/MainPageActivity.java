@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -38,53 +40,47 @@ public class MainPageActivity extends AppCompatActivity {
     DrawerLayout drawer;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
-
-    TextView textCartItemCount;
-    int mCartItemCount = 0;
-    App app;
-    Menu mMenu;
-    boolean flag = true;
-    CartRepository cartRepository;
-
     FirebaseDatabase fDatabase;
     FirebaseAuth fAuth;
     TextView tvFullName, tvEmail;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mnucart, menu);
-        return true;
-    }
+    CartRepository cartRepository;
+    Menu mMenu;
+    int mCartItemCount = 0;
+    TextView textCartItemCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-
         fDatabase = FirebaseDatabase.getInstance();
         fAuth = FirebaseAuth.getInstance();
 
+        cartRepository = new CartRepository(getApplication());
         toolbar = findViewById(R.id.toolbarDrawer);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.open, R.string.close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(actionBarDrawerToggle);
 
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.homeFragment, R.id.orderFragment, R.id.profileFragment).setDrawerLayout(drawer).build();
 
-        navController=Navigation.findNavController(this,R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView,navController);
-        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            MenuItem item= toolbar.getMenu().getItem(0);
-            if (navDestination.getId() == R.id.profileFragment) {
-                item.setVisible(false);
-            } else {
-                item.setVisible(true);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if (destination.getId() == R.id.profileFragment) {
+                    mMenu.findItem(R.id.mnuCart).setVisible(false);
+                } else if (mMenu != null) {
+                    mMenu.findItem(R.id.mnuCart).setVisible(true);
+                }
             }
         });
+
 
         View view = navigationView.getHeaderView(0);
         tvFullName = view.findViewById(R.id.name_header);
@@ -96,18 +92,29 @@ public class MainPageActivity extends AppCompatActivity {
                 .addOnSuccessListener(dataSnapshot -> {
                     Users user = dataSnapshot.getValue(Users.class);
                     user.setUserID(userID);
-                    tvFullName.setText(user.getFirstName()+' '+user.getLastName());
+                    tvFullName.setText(user.getLastName() + ' ' + user.getFirstName());
                     tvEmail.setText(user.getEmail());
 
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainPageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            mCartItemCount = cartRepository.getCountCart();
+            setupBadge();
+            Log.d("ABC", mCartItemCount + "");
+        } catch (ExecutionException e) {
+            Log.d("ABC", e.getMessage());
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            Log.d("ABC", e.getMessage());
+            e.printStackTrace();
+        }
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
@@ -120,6 +127,30 @@ public class MainPageActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menucart, menu);
+        mMenu = menu;
+
+
+        View actionView = mMenu.findItem(R.id.mnuCart).getActionView();
+        textCartItemCount = actionView.findViewById(R.id.cart_badge);
+
+        setupBadge();
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(mMenu.findItem(R.id.mnuCart));
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.mnuCart) {
             Intent intent = new Intent(this, OrderActivity.class);
@@ -128,38 +159,20 @@ public class MainPageActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupBadge() {
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        try {
-//            mCartItemCount = cartRepository.getCountCart();
-//            setupBadge();
-//            Log.d("ABC", mCartItemCount+"");
-//        } catch (ExecutionException e) {
-//            Log.d("ABC", e.getMessage());
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            Log.d("ABC", e.getMessage());
-//            e.printStackTrace();
-//        }
-//
-//    }
+        if (textCartItemCount != null) {
+            if (mCartItemCount == 0) {
+                if (textCartItemCount.getVisibility() != View.GONE) {
+                    textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                    textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
 
-//    private void setupBadge() {
-//        if (textCartItemCount != null) {
-//            if (mCartItemCount == 0) {
-//                if (textCartItemCount.getVisibility() != View.GONE) {
-//                    textCartItemCount.setVisibility(View.GONE);
-//                }
-//            } else {
-//                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
-//                if (textCartItemCount.getVisibility() != View.VISIBLE) {
-//                    textCartItemCount.setVisibility(View.VISIBLE);
-//                }
-//            }
-//
-//        }
-//    }
-
+        }
+    }
 }

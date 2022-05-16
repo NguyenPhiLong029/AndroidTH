@@ -15,7 +15,7 @@
         android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarDrawer"
-            app:menu="@menu/mnucart"
+            app:menu="@menu/menucart"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="@color/colorPrimary"
@@ -38,3 +38,4 @@
         android:fitsSystemWindows="true"
         app:menu="@menu/main_menu"/>
 </androidx.drawerlayout.widget.DrawerLayout>
+

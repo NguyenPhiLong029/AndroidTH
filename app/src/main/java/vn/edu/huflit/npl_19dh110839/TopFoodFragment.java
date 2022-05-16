@@ -31,7 +31,7 @@ import vn.edu.huflit.npl_19dh110839.models.Food;
  * Use the {@link TopFoodFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TopFoodFragment extends Fragment implements FoodAdapter.OnFoodItemClickListener{
+public class TopFoodFragment extends Fragment implements FoodAdapter.OnFoodItemClickListener {
     RecyclerView rvFood;
     FoodAdapter foodAdapter;
     ArrayList<Food> foods;
@@ -82,7 +82,7 @@ public class TopFoodFragment extends Fragment implements FoodAdapter.OnFoodItemC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvFood = view.findViewById(R.id.rvFood);
-        foodAdapter = new FoodAdapter(foods,this);
+        foodAdapter = new FoodAdapter(foods, this);
         rvFood.setAdapter(foodAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvFood.setLayoutManager(layoutManager);
@@ -98,7 +98,6 @@ public class TopFoodFragment extends Fragment implements FoodAdapter.OnFoodItemC
                     Food food = dataSnapshot.getValue(Food.class);
                     foods.add(food);
                 }
-                Collections.reverse(foods);
                 foodAdapter.notifyDataSetChanged();
             }
 
@@ -108,12 +107,15 @@ public class TopFoodFragment extends Fragment implements FoodAdapter.OnFoodItemC
             }
         });
     }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_top_food, container, false);
     }
+
 
     @Override
     public void onFoodItemClick(Food food) {

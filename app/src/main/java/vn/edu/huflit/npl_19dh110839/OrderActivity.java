@@ -44,7 +44,7 @@ import vn.edu.huflit.npl_19dh110839.models.Users;
 
 public class OrderActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView tvTotal, tvName, tvAddress, tvMobile;
+    private TextView tvTotal, tvName, tvAddress;
     private RecyclerView rvFoods;
     private Basket basket;
     private FoodBasketAdapter adapter;
@@ -54,17 +54,19 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
     FirebaseAuth fAuth;
     FirebaseDatabase fDatabase;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.frgMaps);
+
+        SupportMapFragment mapFragment
+                = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.frgMaps);
         mapFragment.getMapAsync(this);
 
         tvAddress = findViewById(R.id.tvAddress);
         tvName = findViewById(R.id.tvName);
-        tvMobile = findViewById(R.id.tvMobile);
 
         fAuth = FirebaseAuth.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
@@ -78,13 +80,15 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                         Users user = dataSnapshot.getValue(Users.class);
                         LatLng latLngUser = new LatLng(user.getLatitude(), user.getLongitude());
                         MarkerOptions options = new MarkerOptions().position(latLngUser);
-                        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)));
+                        options.icon(BitmapDescriptorFactory.fromBitmap(
+                                BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)));
+
                         map.addMarker(options);
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngUser, 10));
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngUser, 16));
+
 
                         tvName.setText("Name: " + user.getFirstName() + " " + user.getLastName());
                         tvAddress.setText("Address: " + user.getEmail());
-                        tvMobile.setText("Mobile: " + user.getPhone());
 
                     }
                 })
@@ -95,18 +99,20 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                     }
                 });
 
+
         cartRepository = new CartRepository(getApplication());
+
 
         Intent intent = getIntent();
 
-        if( intent.getSerializableExtra("basket") != null ){
+        if (intent.getSerializableExtra("basket") != null) {
             basket = (Basket) intent.getSerializableExtra("basket");
-        }else {
+        } else {
             try {
 
                 basket = new Basket();
                 List<Cart> carts = cartRepository.getAllCarts();
-                for (Cart cart : carts){
+                for (Cart cart : carts) {
                     basket.addFood(new FoodBasket(new Food(cart.getFoodName(),
                             cart.getFoodImage(),
                             cart.getFoodPrice(),
@@ -126,12 +132,14 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         }
 
+
         tvTotal = findViewById(R.id.tvTotal);
-        tvTotal.setText(basket.getTotalPrice()+"");
+        tvTotal.setText(basket.getTotalPrice() + "");
         rvFoods = findViewById(R.id.rvFoods);
         adapter = new FoodBasketAdapter(new ArrayList<>(basket.foods.values()));
         rvFoods.setAdapter(adapter);
-        rvFoods.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        rvFoods.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
 
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +155,8 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(@NonNull Void aVoid) {
+
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -157,7 +167,6 @@ public class OrderActivity extends AppCompatActivity implements OnMapReadyCallba
                         });
 
                 finish();
-
             }
         });
     }

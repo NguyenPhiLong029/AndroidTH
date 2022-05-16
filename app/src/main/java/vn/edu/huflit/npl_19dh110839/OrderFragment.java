@@ -3,7 +3,9 @@ package vn.edu.huflit.npl_19dh110839;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +38,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderItemL
     ArrayList<Restaurant> restaurants;
     FirebaseDatabase fDatabase;
     OrderAdapter orderAdapter;
-    ArrayList<OrderFinished> orderFinisheds;
+    ArrayList<OrderFinished> orderList;
     RecyclerView rvOrderFinished;
     DatabaseReference reference;
     // TODO: Rename parameter arguments, choose names that match
@@ -72,17 +75,13 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderItemL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        MapsInitializer.initialize(getApplicationContext());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        orderList = new ArrayList<>();
+        restaurants = new ArrayList<>();
     }
-
-//    private Context getApplicationContext() {
-//
-//        return null;
-//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -91,20 +90,19 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderItemL
         reference = fDatabase.getReference();
 
         rvOrderFinished = view.findViewById(R.id.rvOrderFinished);
-        orderAdapter = new OrderAdapter(orderFinisheds, restaurants, this);
+        orderAdapter = new OrderAdapter(orderList,restaurants,this);
         rvOrderFinished.setAdapter(orderAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvOrderFinished.setLayoutManager(layoutManager);
         rvOrderFinished.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
-        reference.child("orders").addValueEventListener(new ValueEventListener() {
+        reference.child("orders").child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                orderFinisheds.clear();
+                orderList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     OrderFinished orderFinished = dataSnapshot.getValue(OrderFinished.class);
-                    orderFinisheds.add(orderFinished);
-                    Log.i("ABC", "onDataChange: " + orderFinisheds.get(0).getFoodBaskets().size());
+                    orderList.add(orderFinished);
                 }
                 orderAdapter.notifyDataSetChanged();
             }
@@ -121,7 +119,6 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderItemL
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
                     restaurants.add(restaurant);
-
                 }
                 orderAdapter.notifyDataSetChanged();
             }
@@ -133,6 +130,12 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderItemL
         });
 
 
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_order, container, false);
     }
 
     @Override
